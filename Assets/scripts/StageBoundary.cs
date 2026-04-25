@@ -4,39 +4,42 @@ using UnityEngine.SceneManagement;
 public class StageBoundary : MonoBehaviour
 {
     public int playerScore = 0;
-    public int enemyScore = 0;
-    public int winScore = 3;
+    public int enemyScore  = 0;
+    public int winScore    = 3;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             enemyScore++;
-            Debug.Log("Enemy Score: " + enemyScore);
+            other.GetComponent<KnockbackReceiver>()?.ResetDamage(); // reset damage%
+            other.transform.position = new Vector2(0f, 2f);           // respawn
             CheckWin();
         }
         else if (other.CompareTag("Enemy"))
         {
             playerScore++;
-            Debug.Log("Player Score: " + playerScore);
+            other.GetComponent<KnockbackReceiver>()?.ResetDamage();
+            other.transform.position = new Vector2(3f, 2f);
             CheckWin();
         }
+
+        // อัพเดต UI score (ถ้ามี GameManager)
+        GameManager.instance?.UpdateScoreUI(playerScore, enemyScore);
     }
 
     void CheckWin()
     {
         if (playerScore >= winScore)
         {
-            Debug.Log("PLAYER WIN");
-            // ใส่ scene ชนะทีหลัง
+            PlayerPrefs.SetInt("PlayerWin", 1);
+            SceneManager.LoadScene("Result"); // ← เปลี่ยนจาก Debug.Log
         }
         else if (enemyScore >= winScore)
         {
-            Debug.Log("ENEMY WIN");
+            PlayerPrefs.SetInt("PlayerWin", 0);
+            SceneManager.LoadScene("Result"); // ← เปลี่ยนจาก Debug.Log
         }
-        else
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+        // ถ้ายังไม่ถึง winScore → respawn อัตโนมัติจากด้านบนแล้ว
     }
 }

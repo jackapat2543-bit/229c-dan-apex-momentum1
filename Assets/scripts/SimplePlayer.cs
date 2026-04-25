@@ -7,6 +7,13 @@ public class SimplePlayer : MonoBehaviour // library สำหรับตอน
     private Animator anim; // ดึง component Animator
     private ParticleSystem grassPar; // particle
     private ParticleSystem.EmissionModule emission; // ตัวปล่อย particle
+    private Collider2D hitboxCollider;
+    private bool isAttacking = false;
+
+     [Header("Attack")]
+     [SerializeField] private GameObject hitboxObject;
+     [SerializeField] private float attackDuration = 0.2f;
+
 
     [Header("Ground And Wall Check")]
     [SerializeField] private float groundDistCheck = 1f; // ระยะไกลสุดที่ใช้ sensor ตรวจหาพื้น
@@ -238,12 +245,7 @@ private System.Collections.IEnumerator AttackCoroutine()
         emission.enabled = isGrounded; // ถ้าอยู่้บนพื้นปล่อย particle ได้
     }
 
-      [Header("Attack")]
-[SerializeField] private GameObject hitboxObject;
-[SerializeField] private float attackDuration = 0.2f;
-
-private Collider2D hitboxCollider;
-private bool isAttacking = false;
+     
 
 
 
