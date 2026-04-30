@@ -1,23 +1,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
-    [Header("Result Screen (ใส่ถ้าอยู่ใน Result Scene)")]
-    public TMP_Text resultText;
+  public void start_game ()
+  {
+    SceneManager.LoadScene(1);
+  }
+  public void main_menu()
+  {
+     SceneManager.LoadScene(0);
+  }
+  public void load_lose_scene()
+{
+    SceneManager.LoadScene(2);
+}
 
-    void Start()
-    {
-        if (resultText)
-        {
-            int win = PlayerPrefs.GetInt("PlayerWin", 0);
-            resultText.text = win == 1 ? "🏆 YOU WIN!" : "💀 YOU LOSE...";
-        }
-    }
-
-    // ผูกกับ Button → OnClick() ใน Inspector
-    public void PlayGame()  => SceneManager.LoadScene("Battle");
-    public void GoToMenu() => SceneManager.LoadScene("MainMenu");
-    public void GoCredit() => SceneManager.LoadScene("Credit");
 }
