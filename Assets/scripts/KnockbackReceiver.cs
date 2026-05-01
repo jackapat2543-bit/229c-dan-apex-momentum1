@@ -38,4 +38,5 @@ public class KnockbackReceiver : MonoBehaviour
         rb.angularVelocity = 0f;
         rb.rotation = 0f;
     }
+ 
 }

@@ -64,6 +64,10 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        if (isKnockedBack)
+{
+    return;
+} 
         if (player == null) return;
 
         attackTimer -= Time.deltaTime;
@@ -238,9 +242,9 @@ public class EnemyAI : MonoBehaviour
     }
 
     // ─── Public ──────────────────────────────
+    
     public void SetKnockedBack(bool val)
-    {
-        isKnockedBack = val;
-        if (val) wasKnockingBack = true;
-    }
+{
+    isKnockedBack = val;
+}
 }

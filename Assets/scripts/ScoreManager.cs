@@ -1,60 +1,84 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
-    public bool isDead = false;
+
     [Header("Score")]
     public int score = 0;
-    public Text scoreText;
+    public TMP_Text scoreText;
 
     [Header("Player Health")]
     public int maxHP = 3;
     public int currentHP;
-    public Text hpText;
+    public TMP_Text hpText;
+
+    [Header("Scene")]
+    public string loseSceneName = "LoseScene";
+
+    private bool isDead = false;
 
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-
+        if (Instance == null) Instance = this;
+        else { Destroy(gameObject); return; }
         currentHP = maxHP;
+        UpdateUI();
     }
 
     public void AddScore(int amount)
-    {
-        score += amount;
-        UpdateUI();
-    }
+{
+    if (isDead) return;
 
-    public void TakeDamage(int dmg)
+    score += amount;
+    UpdateUI();
+
+    if (score >= winScore)
     {
+        Win();
+    }
+}
+
+    
+    public void TakeDamage(int dmg = 1)
+    {
+        if (isDead) return;
         currentHP -= dmg;
         UpdateUI();
 
-        if (currentHP <= 0)
-        {
-            Die();
-        }
+        if (currentHP <= 0) Die();
     }
 
     void Die()
     {
-        SceneManager.LoadScene("LoseScene");
+        isDead = true;
+        Invoke(nameof(LoadLose), 1f);
     }
+
+    void LoadLose() => SceneManager.LoadScene(3); 
 
     void UpdateUI()
     {
-        if (scoreText != null)
-            scoreText.text = "Score: " + score;
-
-        if (hpText != null)
-            hpText.text = "HP: " + currentHP;
+        if (scoreText) scoreText.text = "Score: " + score;
+        if (hpText)    hpText.text    = "HP: " + currentHP;
     }
-    
+[Header("Win Condition")]
+public int winScore = 10;
+public string winSceneName = "WinScene";
+
+void Win()
+{
+    isDead = true; 
+    Invoke(nameof(LoadWin), 1f);
+}
+
+void LoadWin()
+{
+    SceneManager.LoadScene(4);
+}
+
 
 }

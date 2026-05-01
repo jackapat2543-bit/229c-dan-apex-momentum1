@@ -9,6 +9,8 @@ public class SimplePlayer : MonoBehaviour // library สำหรับตอน
     private ParticleSystem.EmissionModule emission; // ตัวปล่อย particle
     private Collider2D hitboxCollider;
     private bool isAttacking = false;
+  
+
 
      [Header("Attack")]
      [SerializeField] private GameObject hitboxObject;
@@ -78,6 +80,7 @@ private System.Collections.IEnumerator AttackCoroutine()
     hitboxCollider.enabled = false;
     isAttacking = false;
 }
+
     private void Update() // รันทุก frame
     {
         Attack();
@@ -245,7 +248,7 @@ private System.Collections.IEnumerator AttackCoroutine()
         emission.enabled = isGrounded; // ถ้าอยู่้บนพื้นปล่อย particle ได้
     }
 
-     
+ 
 
 
 

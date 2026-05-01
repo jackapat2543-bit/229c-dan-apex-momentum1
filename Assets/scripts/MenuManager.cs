@@ -17,7 +17,7 @@ public class MenuManager : MonoBehaviour
 }
 public void CREDIT ()
   {
-    SceneManager.LoadScene(3);
+    SceneManager.LoadScene(2);
   }
   
 

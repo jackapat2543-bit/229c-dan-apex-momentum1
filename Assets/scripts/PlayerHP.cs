@@ -1,44 +1,35 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerHP : MonoBehaviour
 {
-    public bool isDead = false;
-    public string loseSceneName = "LoseScene"; 
+    [Header("Hit Settings")]
+    public float hitCooldown = 1f;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private float lastHitTime = -999f;
+    private bool isDead = false;
+
+    void OnCollisionEnter2D(Collision2D col)
     {
         if (isDead) return;
-
-        if (collision.gameObject.GetComponent<EnemyAI>() != null)
-        {
-            Die();
-        }
+        if (col.gameObject.GetComponent<EnemyAI>() != null)
+            TryTakeDamage();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D col)
     {
         if (isDead) return;
-
-        if (collision.GetComponent<EnemyAI>() != null)
-        {
-            Die();
-        }
+        if (col.GetComponent<EnemyAI>() != null)
+            TryTakeDamage();
     }
 
-    void Die()
+    void TryTakeDamage()
     {
-        isDead = true;
+        if (Time.time - lastHitTime < hitCooldown) return;
+        lastHitTime = Time.time;
 
-        Debug.Log("Player Died");
-
-        
-
-        Invoke(nameof(LoadLoseScene), 1f);
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.TakeDamage(1);
     }
 
-    void LoadLoseScene()
-    {
-        SceneManager.LoadScene(loseSceneName);
-    }
+    public void SetDead() { isDead = true; }
 }

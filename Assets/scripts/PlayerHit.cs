@@ -20,22 +20,13 @@ public class PlayerHit : MonoBehaviour
 
     void TakeHit(Transform enemy)
     {
-        
+        // ลด HP
         ScoreManager.Instance.TakeDamage(1);
 
-        
+        // คำนวณทิศกระเด็น
         Vector2 dir = (transform.position - enemy.position).normalized;
 
         rb.linearVelocity = Vector2.zero;
         rb.AddForce(dir * knockbackForce, ForceMode2D.Impulse);
     }
-void Update()
-{
-    if (ScoreManager.Instance.isDead)
-    {
-        FindObjectOfType<MenuManager>().load_lose_scene();
-    }
 }
-
-}
-
